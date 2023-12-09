@@ -30,8 +30,3 @@ steps:
   ]
 images:
 - 'europe-west1-docker.pkg.dev/react-node-mongo-juan/container-images/server-ejercicio:1.0'
-
-availableSecrets:
-  secretManager:
-    - versionName: projects/623401579225/secrets/DB_URL_ATLAS/versions/latest
-      env: 'DB_URL_ATLAS'
