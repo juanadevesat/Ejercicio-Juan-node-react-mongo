@@ -1,15 +1,15 @@
 steps:
 
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['config', 'set', 'project', 'thebridgeschool-cloud']
+  args: ['config', 'set', 'project', 'react-node-mongo-juan']
 
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/users-app-client:$COMMIT_SHA', '-f', 'client/Dockerfile', '.']
+  args: ['build', '-t', 'europe-west1-docker.pkg.dev/react-node-mongo-juan/container-images/client-ejercicio:1.0', '-f', 'client/Dockerfile', '.']
 
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/users-app-client:$COMMIT_SHA']
+  args: ['push', 'europe-west1-docker.pkg.dev/react-node-mongo-juan/container-images/client-ejercicio:1.0']
 
 # Deploy container image to Cloud Run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -17,7 +17,7 @@ steps:
   args: [
     "-c",
     "gcloud run deploy react-nodejs-cloudbuilds-client 
-    --image=gcr.io/$PROJECT_ID/users-app-client:$COMMIT_SHA 
+    --image=europe-west1-docker.pkg.dev/react-node-mongo-juan/container-images/client-ejercicio:1.0 
     --region=europe-west1 
     --platform=managed 
     --allow-unauthenticated 
@@ -29,7 +29,7 @@ steps:
     'DB_URL_ATLAS'
   ]
 images:
-- 'gcr.io/$PROJECT_ID/users-app-client:$COMMIT_SHA'
+- 'europe-west1-docker.pkg.dev/react-node-mongo-juan/container-images/client-ejercicio:1.0'
 
 availableSecrets:
   secretManager:
