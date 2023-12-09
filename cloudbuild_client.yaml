@@ -25,8 +25,5 @@ steps:
     --update-env-vars DB_URL_ATLAS=$$DB_URL_ATLAS"
   ]
 
-  secretEnv: [
-    'DB_URL_ATLAS'
-  ]
 images:
 - 'europe-west1-docker.pkg.dev/react-node-mongo-juan/container-images/client-ejercicio:1.0'
