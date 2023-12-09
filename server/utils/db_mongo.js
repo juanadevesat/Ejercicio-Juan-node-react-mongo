@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 require('dotenv').config();
 mongoose.set('strictQuery', true);
 
-const url = "mongodb+srv://juanadevesat93:rTTxVd4YlhXdBIO9@cluster-juan.tpeqodt.mongodb.net/";
+const url = process.env.DB_URL_ATLAS;
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
