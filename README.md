@@ -71,4 +71,40 @@ Una vez creado el server, necesitamos pasarle su URL al front-end. Nuestro clien
 
 ![URL al backend en client](img/4-frontend-url-to-backend.png)
 
+Con la modificación de la URL podemos crear un segundo trigger para cloud build que ejecute el cloudbuild.yaml correspondiente:
+
+**cloudbuild_client.yaml**:
+
+```yaml
+steps:
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['config', 'set', 'project', 'react-node-mongo-juan']
+
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'europe-west1-docker.pkg.dev/$PROJECT_ID/container-images/client-ejercicio:1.0', '-f', 'client/Dockerfile', '.']
+
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'europe-west1-docker.pkg.dev/$PROJECT_ID/container-images/client-ejercicio:1.0']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: bash
+  args: [
+    "-c",
+    "gcloud run deploy react-nodejs-cloudbuilds-client 
+    --image=europe-west1-docker.pkg.dev/$PROJECT_ID/container-images/client-ejercicio:1.0 
+    --region=europe-west1 
+    --platform=managed 
+    --allow-unauthenticated 
+    --port=5173 
+    --update-env-vars DB_URL_ATLAS=$$DB_URL_ATLAS"
+  ]
+
+images:
+- 'europe-west1-docker.pkg.dev/$PROJECT_ID/container-images/client-ejercicio:1.0'
+```
+
 ¡Y con esto hemos logrado una aplicación web completamente funcional!
