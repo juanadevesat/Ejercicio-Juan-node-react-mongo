@@ -108,3 +108,31 @@ images:
 ```
 
 ¡Y con esto hemos logrado una aplicación web completamente funcional!
+
+## Mejora de Seguridad:
+
+Tenemos un punto debil en la seguridad de nuestra base de datos, ya que esta permite acceso desde cualquier IP. En el caso que tengamos una base de datos en MongoDB con servidor dedicado (de tipo M10 o superior) podemos optimizar su seguridad utilizando una *Peering connection*:
+
+![Peering connection](img/5-peering.png)
+
+![Peering connection VPC](img/6-peering2.png)
+
+Cuando hayamos creado el peering connection en Atlas, MongoDB nos creará una VPC para nuestra base de datos, y conectaremos esta VPC a la VPC de nuestro proyecto de google cloud. Para ello necesitamos el *Atlas GCP Project ID* y el *Atlas VPC name*, que obtenemos una vez se haya creado la conexión en Atlas. Si no aparecen, refrescamos la página hasta que lo hagan:
+
+![Peering ID y nombre VPC](img/7-peering3.png)
+
+Cuando tengamos la información anterior, podemos proceder a crear la conexión en google:
+
+![Peering en Google](img/8-GCP-peering-1.png)
+
+![Conexión peering con gcp y atlas](img/9-GCP-peering-2.png)
+
+Una vez completada la conexión, solo nos queda autorizar el rango de IPs de nuestra región en Atlas. Obtenemos la IP en google cloud VPC networks, y autorizamos las subnets igual que antes:
+
+![GCP lista de subnets](img/10-GCP-ip-adress.png)
+
+![Atlas subnet permitida](img/11-atlas-ip-gcp-region.png)
+
+Sin embargo, en nuestro ejercicio educativo, utilizamos una base de datos de tipo M0, la cual no permite el *Peering Connection* debido a ser del tipo servidor compartido:
+
+![Aviso de peering en servidores compartidos](img/12-peering-m10-y-mas.png)
